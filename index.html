@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>60天瘦身營・商業模式提案</title>
+<style>
+  /* ===== 基礎設定（白話：整頁的字型、底色、間距） ===== */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --green: #2faa6e;       /* 主色：健康綠 */
+    --green-d: #1f7d50;
+    --orange: #f08a3c;      /* 副色：活力橘 */
+    --orange-d: #d96f1f;
+    --ink: #2b2b2b;
+    --muted: #6f7b76;
+    --bg: #f4f8f5;
+    --card: #ffffff;
+    --line: #e3ece6;
+  }
+  body {
+    font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+  /* ===== 頂部標題區 ===== */
+  header {
+    background: linear-gradient(135deg, var(--green) 0%, #38b87c 60%, var(--orange) 140%);
+    color: #fff;
+    padding: 54px 20px 60px;
+    text-align: center;
+  }
+  header .badge {
+    display: inline-block; background: rgba(255,255,255,.22);
+    padding: 5px 16px; border-radius: 999px; font-size: 14px;
+    letter-spacing: 2px; margin-bottom: 16px; backdrop-filter: blur(4px);
+  }
+  header h1 { font-size: 38px; font-weight: 800; letter-spacing: 1px; }
+  header h1 span { display: block; font-size: 17px; font-weight: 400; opacity: .92; margin-top: 12px; letter-spacing: 1px; }
+  header .meta { margin-top: 22px; font-size: 14px; opacity: .9; }
+  header .meta b { background: rgba(255,255,255,.2); padding: 3px 10px; border-radius: 8px; margin: 0 4px; }
+
+  /* ===== 區段標題 ===== */
+  .section { padding: 46px 0; }
+  .section h2 { font-size: 24px; text-align: center; margin-bottom: 6px; }
+  .section .sub { text-align: center; color: var(--muted); margin-bottom: 32px; font-size: 15px; }
+
+  /* ===== 兩案卡片 ===== */
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .card {
+    background: var(--card); border-radius: 20px; overflow: hidden;
+    box-shadow: 0 8px 30px rgba(31,125,80,.08);
+    border: 2px solid transparent; transition: .25s; cursor: pointer;
+    display: flex; flex-direction: column;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 16px 44px rgba(31,125,80,.16); }
+  .card.picked { border-color: var(--green); }
+  .card.b.picked { border-color: var(--orange); }
+  .card .top { padding: 26px 26px 18px; color: #fff; }
+  .card.a .top { background: linear-gradient(135deg, var(--green), var(--green-d)); }
+  .card.b .top { background: linear-gradient(135deg, var(--orange), var(--orange-d)); }
+  .card .tag { font-size: 13px; letter-spacing: 2px; opacity: .9; }
+  .card .top h3 { font-size: 25px; margin: 6px 0 10px; }
+  .card .oneliner { font-size: 14.5px; opacity: .95; min-height: 48px; }
+  .card .body { padding: 22px 26px 12px; flex: 1; }
+  .card .row { margin-bottom: 16px; }
+  .card .row .k { font-size: 13px; color: var(--muted); font-weight: 700; margin-bottom: 3px; }
+  .card .row .v { font-size: 15px; }
+  .price { font-size: 30px; font-weight: 800; }
+  .card.a .price { color: var(--green-d); }
+  .card.b .price { color: var(--orange-d); }
+  .price small { font-size: 14px; font-weight: 500; color: var(--muted); }
+
+  .pros, .cons { font-size: 14px; padding-left: 4px; }
+  .pros li, .cons li { list-style: none; margin-bottom: 5px; padding-left: 24px; position: relative; }
+  .pros li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 800; }
+  .cons li::before { content: "！"; position: absolute; left: 0; color: var(--orange-d); font-weight: 800; font-size: 12px; }
+
+  .fit { background: var(--bg); border-radius: 12px; padding: 12px 16px; font-size: 14px; margin-top: 4px; }
+  .fit b { color: var(--ink); }
+
+  .pickbtn {
+    margin: 18px 26px 26px; padding: 13px; border: none; border-radius: 12px;
+    font-size: 16px; font-weight: 700; color: #fff; cursor: pointer; transition: .2s;
+    font-family: inherit;
+  }
+  .card.a .pickbtn { background: var(--green); }
+  .card.b .pickbtn { background: var(--orange); }
+  .pickbtn:hover { filter: brightness(1.06); }
+
+  /* ===== 共通機制 chips ===== */
+  .common { background: #fff; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 760px; margin: 0 auto; }
+  .chip { background: var(--bg); border: 1px solid var(--line); padding: 9px 16px; border-radius: 999px; font-size: 14.5px; }
+  .chip b { color: var(--green-d); }
+
+  /* ===== 好玩機制 grid ===== */
+  .fun { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .fun .item { background: #fff; border-radius: 14px; padding: 20px; border: 1px solid var(--line); }
+  .fun .item .ico { font-size: 28px; }
+  .fun .item h4 { font-size: 16px; margin: 8px 0 4px; }
+  .fun .item p { font-size: 13.5px; color: var(--muted); }
+
+  /* ===== 對照表 ===== */
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 6px 24px rgba(31,125,80,.07); }
+  th, td { padding: 15px 18px; text-align: center; border-bottom: 1px solid var(--line); font-size: 15px; }
+  th { background: #eef5f0; font-size: 14px; }
+  td:first-child, th:first-child { text-align: left; color: var(--muted); font-weight: 700; }
+  .col-a { color: var(--green-d); font-weight: 700; }
+  .col-b { color: var(--orange-d); font-weight: 700; }
+  tr:last-child td { border-bottom: none; }
+
+  /* ===== 建議 ===== */
+  .reco { background: linear-gradient(135deg, #eef7f1, #fdf2e7); border-radius: 20px; padding: 34px; text-align: center; }
+  .reco h2 { border: none; }
+  .reco p { max-width: 680px; margin: 10px auto 0; font-size: 15.5px; }
+  .reco .hint { margin-top: 18px; font-size: 14px; color: var(--muted); }
+
+  /* ===== 老闆選擇結果條 ===== */
+  #verdict {
+    position: fixed; left: 0; right: 0; bottom: 0; transform: translateY(120%);
+    background: var(--ink); color: #fff; padding: 16px 20px; text-align: center;
+    font-size: 16px; transition: .3s; z-index: 50; box-shadow: 0 -4px 20px rgba(0,0,0,.2);
+  }
+  #verdict.show { transform: translateY(0); }
+  #verdict b { color: #ffd089; }
+  #verdict .x { margin-left: 14px; opacity: .7; cursor: pointer; text-decoration: underline; font-size: 14px; }
+
+  footer { text-align: center; padding: 30px 20px 90px; color: var(--muted); font-size: 13px; }
+
+  /* ===== 手機版 ===== */
+  @media (max-width: 720px) {
+    header h1 { font-size: 28px; }
+    .cards { grid-template-columns: 1fr; }
+    .fun { grid-template-columns: 1fr; }
+    table { font-size: 13px; }
+    th, td { padding: 11px 9px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">美你的事國際・資訊部</div>
+  <h1>60天瘦身營・商業模式提案
+    <span>個人闖關打卡 × 專屬網站 × 益生菌＋蛋白飲｜兩案並陳，請老闆拍板</span>
+  </h1>
+  <div class="meta">為期 <b>60 天</b> ・ 金流走 <b>綠界</b> ・ 主打產品 <b>益生菌＋蛋白飲</b></div>
+</header>
+
+<!-- ====== 兩案卡片 ====== -->
+<div class="section">
+  <div class="wrap">
+    <h2>兩種商業模式</h2>
+    <div class="sub">一穩一新，點下方按鈕模擬選擇，方便當場拍板</div>
+
+    <div class="cards">
+
+      <!-- 方案一 -->
+      <div class="card a" id="cardA">
+        <div class="top">
+          <div class="tag">方案一 ・ 穩健出貨型</div>
+          <h3>純買套組制</h3>
+          <div class="oneliner">報名就是買 60 天產品套組，營隊免費送。出貨量最大、最好管。</div>
+        </div>
+        <div class="body">
+          <div class="row">
+            <div class="k">客單價</div>
+            <div class="v"><span class="price">5,980<small> 元</small></span> <small>（早鳥 4,980）</small></div>
+          </div>
+          <div class="row">
+            <div class="k">客人付什麼</div>
+            <div class="v">一次買「60 天益生菌＋蛋白飲套組」</div>
+          </div>
+          <div class="row">
+            <div class="k">公司賺什麼</div>
+            <div class="v">賺產品本身，金流最單純（綠界刷一筆，跟現有一頁式邏輯一樣）</div>
+          </div>
+          <div class="row">
+            <div class="k">優點</div>
+            <ul class="pros">
+              <li>簡單穩定、出貨量大</li>
+              <li>退款單純、馬上能上線</li>
+            </ul>
+          </div>
+          <div class="row">
+            <div class="k">缺點</div>
+            <ul class="cons">
+              <li>門檻較高，怕貴的人會卻步</li>
+              <li>少了「賭一把」的刺激</li>
+            </ul>
+          </div>
+          <div class="fit">👉 <b>適合：</b>想穩、想清庫存、不想處理複雜退款的老闆</div>
+        </div>
+        <button class="pickbtn" onclick="pick('a')">老闆傾向這案 →</button>
+      </div>
+
+      <!-- 方案二 -->
+      <div class="card b" id="cardB">
+        <div class="top">
+          <div class="tag">方案二 ・ 話題黏著型</div>
+          <h3>押金抵產品制</h3>
+          <div class="oneliner">押一筆保證金逼你完賽，完賽折抵成產品不退現金。黏著度最高又帶回購。</div>
+        </div>
+        <div class="body">
+          <div class="row">
+            <div class="k">客單價</div>
+            <div class="v"><span class="price">5,980<small> 元</small></span> <small>（套組 3,980 ＋ 保證金 2,000）</small></div>
+          </div>
+          <div class="row">
+            <div class="k">客人付什麼</div>
+            <div class="v">啟動套組 3,980 ＋ 保證金 2,000</div>
+          </div>
+          <div class="row">
+            <div class="k">公司賺什麼</div>
+            <div class="v">套組賺產品；保證金完賽折抵成產品券（不退現金、帶第二次出貨）；放棄者保證金可分給完賽者</div>
+          </div>
+          <div class="row">
+            <div class="k">優點</div>
+            <ul class="pros">
+              <li>痛感＋爽感最強、話題性高</li>
+              <li>自然帶第二次回購、完賽率高</li>
+            </ul>
+          </div>
+          <div class="row">
+            <div class="k">缺點</div>
+            <ul class="cons">
+              <li>金流與規則較複雜（保證金、折抵、放棄判定）</li>
+              <li>條款要寫死，避免客訴</li>
+            </ul>
+          </div>
+          <div class="fit">👉 <b>適合：</b>想做聲量、衝完賽率與回購、敢玩新機制的老闆</div>
+        </div>
+        <button class="pickbtn" onclick="pick('b')">老闆傾向這案 →</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ====== 對照表 ====== -->
+<div class="section">
+  <div class="wrap">
+    <h2>一眼對照</h2>
+    <div class="sub">同樣客單價，差在玩法與後續價值</div>
+    <table>
+      <tr><th>比較項目</th><th class="col-a">方案一 穩健</th><th class="col-b">方案二 話題</th></tr>
+      <tr><td>客單價</td><td>5,980</td><td>5,980（含 2,000 保證金）</td></tr>
+      <tr><td>開發難度</td><td>低</td><td>中高（多押金／退款邏輯）</td></tr>
+      <tr><td>完賽動力</td><td>中（靠獎勵）</td><td>高（怕被分錢）</td></tr>
+      <tr><td>帶回購</td><td>一次</td><td>容易帶第二次</td></tr>
+      <tr><td>客訴風險</td><td>低</td><td>中（規則要寫死）</td></tr>
+      <tr><td>上線速度</td><td>快</td><td>較慢</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ====== 共通機制 ====== -->
+<div class="section common">
+  <div class="wrap">
+    <h2>兩案都包含</h2>
+    <div class="sub">不管老闆選哪案，這些基本盤都一樣</div>
+    <div class="chips">
+      <div class="chip">📅 <b>每日打卡解鎖</b></div>
+      <div class="chip">🎯 <b>排行榜＋獎品</b></div>
+      <div class="chip">🎡 <b>抽獎轉盤</b></div>
+      <div class="chip">👯 <b>揪團加碼</b></div>
+      <div class="chip">📸 <b>前後對比牆</b></div>
+      <div class="chip">🌐 個人闖關 ・ 專屬網站</div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 好玩機制 ====== -->
+<div class="section">
+  <div class="wrap">
+    <h2>讓大家黏著的好玩機制</h2>
+    <div class="sub">基本盤之外，再加這些會更有梗、更難放棄</div>
+    <div class="fun">
+      <div class="item"><div class="ico">🔥</div><h4>連續火苗 Streak</h4><p>連續天數越長火越大，斷一天歸零，逼人每天回來。</p></div>
+      <div class="item"><div class="ico">🏅</div><h4>里程碑徽章</h4><p>第 7／30／60 天解鎖專屬徽章，可炫耀分享。</p></div>
+      <div class="item"><div class="ico">✅</div><h4>每日任務卡</h4><p>量體重外加喝水、拍蛋白飲、走 5000 步，每天有事做。</p></div>
+      <div class="item"><div class="ico">❤️‍🩹</div><h4>復活卡／補簽卡</h4><p>斷簽可用點數買復活，降低放棄率，也能當小額付費。</p></div>
+      <div class="item"><div class="ico">📅</div><h4>每週主題挑戰</h4><p>第 1 週戒含糖飲、第 2 週原型食物…每週換花樣不無聊。</p></div>
+      <div class="item"><div class="ico">🤝</div><h4>監督好友綁定</h4><p>個人賽也綁一個督促人，互相不能放棄。</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 建議 ====== -->
+<div class="section">
+  <div class="wrap">
+    <div class="reco">
+      <h2>資訊部建議</h2>
+      <p><b>想穩</b>就方案一、<b>想做聲量</b>就方案二。也可以<b>方案一先上線驗證，後續再升級成方案二</b>，風險最低、節奏最好掌握。</p>
+      <div class="hint">＊ 定價為建議區間，實際依產品成本與毛利再調整。</div>
+    </div>
+  </div>
+</div>
+
+<div id="verdict">
+  老闆目前傾向：<b id="verdictName"></b>
+  <span class="x" onclick="clearPick()">取消</span>
+</div>
+
+<footer>美你的事國際有限公司 ・ 資訊部 ・ 60天瘦身營商業模式提案</footer>
+
+<script>
+  // 白話：老闆點「傾向這案」就把卡片框起來，底部跳出結果條
+  function pick(which) {
+    var a = document.getElementById('cardA');
+    var b = document.getElementById('cardB');
+    a.classList.toggle('picked', which === 'a');
+    b.classList.toggle('picked', which === 'b');
+    var name = which === 'a' ? '方案一　純買套組制（穩健出貨型）' : '方案二　押金抵產品制（話題黏著型）';
+    document.getElementById('verdictName').textContent = name;
+    document.getElementById('verdict').classList.add('show');
+    document.getElementById('verdict').scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+  function clearPick() {
+    document.getElementById('cardA').classList.remove('picked');
+    document.getElementById('cardB').classList.remove('picked');
+    document.getElementById('verdict').classList.remove('show');
+  }
+</script>
+
+</body>
+</html>
