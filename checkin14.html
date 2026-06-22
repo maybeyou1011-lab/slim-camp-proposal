@@ -227,22 +227,30 @@
     </div>
   </section>
 
-  <!-- 數據上傳 -->
+  <!-- 體重記錄 + 折線圖 -->
   <section>
     <div class="card">
-      <h2>期初／結業數據</h2>
-      <div class="sub">完賽需上傳期初與結業體重（示範用，正式版可上傳前後對比照）</div>
+      <h2>體重記錄</h2>
+      <div class="sub">每天記一次，看著線往下走最有成就感。完賽需有 Day1 期初與 Day14 結業體重</div>
+
       <div class="datarow">
-        <label>期初體重</label>
-        <input type="number" id="w0" placeholder="例如 62.0" inputmode="decimal">
-        <span class="done-tag" id="w0tag"></span>
+        <label id="wdayLabel">Day 1 體重</label>
+        <input type="number" id="wday" placeholder="例如 62.0" inputmode="decimal" step="0.1">
+        <span style="flex:none;font-size:14px;color:var(--muted);">kg</span>
       </div>
-      <div class="datarow">
-        <label>結業體重</label>
-        <input type="number" id="w1" placeholder="Day14 再填" inputmode="decimal">
-        <span class="done-tag" id="w1tag"></span>
+      <button class="checkin-btn" id="saveWeight" style="background:var(--orange);margin-top:2px;">記錄今天體重</button>
+
+      <!-- 摘要 -->
+      <div id="wSummary" style="display:none;margin-top:18px;background:var(--green-l);border-radius:12px;padding:14px 16px;font-size:14.5px;">
+        期初 <b id="sW0">–</b> kg　→　目前 <b id="sWnow">–</b> kg
+        <span id="sDelta" style="float:right;font-weight:800;"></span>
       </div>
-      <button class="checkin-btn" id="saveData" style="background:var(--orange);margin-top:6px;">儲存數據</button>
+
+      <!-- 折線圖 -->
+      <div id="chartEmpty" style="margin-top:18px;text-align:center;color:var(--muted);font-size:14px;padding:24px 0;background:var(--bg);border-radius:12px;">記錄體重後，這裡會畫出你的變化線 📉</div>
+      <div id="chartWrap" style="display:none;margin-top:18px;">
+        <svg id="chart" viewBox="0 0 320 180" style="width:100%;height:auto;"></svg>
+      </div>
     </div>
   </section>
 
@@ -293,10 +301,15 @@ function load(){
   try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch(e){ return null; }
 }
 function blank(){
-  return { day:1, checked:[], todayTasks:[false,false,false,false,false,false], w0:"", w1:"" };
+  return { day:1, checked:[], todayTasks:[false,false,false,false,false,false], weights:{} };
 }
 let S = load() || blank();
+if(!S.weights) S.weights = {}; // 舊資料相容
 function save(){ localStorage.setItem(KEY, JSON.stringify(S)); }
+
+/* 體重小工具 */
+function wVal(d){ const v=S.weights[d]; return (v===undefined||v===null||v==="")?null:parseFloat(v); }
+function hasFullData(){ return wVal(1)!==null && wVal(14)!==null; }
 
 /* ============ 渲染 ============ */
 function streak(){
@@ -322,7 +335,7 @@ function render(){
   document.getElementById("winNow").textContent = cc;
   const pct = Math.min(100, Math.round(cc/WIN*100));
   document.getElementById("winBar").style.width = pct + "%";
-  document.getElementById("winFlag").classList.toggle("show", cc>=WIN && S.w0 && S.w1);
+  document.getElementById("winFlag").classList.toggle("show", cc>=WIN && hasFullData());
 
   // 任務清單
   const list = document.getElementById("tasklist");
@@ -365,7 +378,7 @@ function render(){
   // 徽章
   document.getElementById("bg3").classList.toggle("got", cc>=3);
   document.getElementById("bg7").classList.toggle("got", cc>=7);
-  document.getElementById("bg14").classList.toggle("got", cc>=WIN && S.w0 && S.w1);
+  document.getElementById("bg14").classList.toggle("got", cc>=WIN && hasFullData());
 
   // 地圖
   const cal = document.getElementById("cal");
@@ -378,11 +391,70 @@ function render(){
     cal.appendChild(el);
   }
 
-  // 數據
-  document.getElementById("w0").value = S.w0;
-  document.getElementById("w1").value = S.w1;
-  document.getElementById("w0tag").textContent = S.w0 ? "已填" : "";
-  document.getElementById("w1tag").textContent = S.w1 ? "已填" : "";
+  // 體重輸入：標籤跟著當天走，已記錄則帶出今天的值
+  document.getElementById("wdayLabel").textContent = "Day " + d + " 體重";
+  const todayW = wVal(d);
+  document.getElementById("wday").value = todayW!==null ? todayW : "";
+  const sw = document.getElementById("saveWeight");
+  sw.textContent = todayW!==null ? ("Day "+d+" 已記錄 "+todayW+" kg・可更新") : "記錄今天體重";
+
+  renderWeight();
+}
+
+/* ===== 體重摘要 + 折線圖 ===== */
+function renderWeight(){
+  const pts=[];
+  for(let i=1;i<=14;i++){ const w=wVal(i); if(w!==null) pts.push({d:i,w}); }
+
+  // 摘要
+  const sum=document.getElementById("wSummary");
+  if(pts.length>=1){
+    sum.style.display="block";
+    const first=pts[0], last=pts[pts.length-1];
+    document.getElementById("sW0").textContent=first.w.toFixed(1);
+    document.getElementById("sWnow").textContent=last.w.toFixed(1);
+    const diff=last.w-first.w;
+    const el=document.getElementById("sDelta");
+    if(pts.length<2){ el.textContent="開始記錄囉"; el.style.color="var(--muted)"; }
+    else if(diff<0){ el.textContent="共減 "+Math.abs(diff).toFixed(1)+" kg 👏"; el.style.color="var(--green-d)"; }
+    else if(diff>0){ el.textContent="增加 "+diff.toFixed(1)+" kg"; el.style.color="var(--orange-d)"; }
+    else { el.textContent="持平"; el.style.color="var(--muted)"; }
+  } else { sum.style.display="none"; }
+
+  // 折線圖
+  const empty=document.getElementById("chartEmpty");
+  const wrap=document.getElementById("chartWrap");
+  if(pts.length===0){ empty.style.display="block"; wrap.style.display="none"; return; }
+  empty.style.display="none"; wrap.style.display="block";
+
+  const W=320,H=180,padL=30,padR=12,padT=14,padB=22;
+  const ws=pts.map(p=>p.w);
+  let mn=Math.min(...ws), mx=Math.max(...ws);
+  if(mn===mx){ mn-=1; mx+=1; } else { const m=(mx-mn)*0.25; mn-=m; mx+=m; }
+  const X=d=> padL+(d-1)/13*(W-padL-padR);
+  const Y=w=> padT+(1-(w-mn)/(mx-mn))*(H-padT-padB);
+
+  let svg="";
+  // 橫格線 + y 標
+  [0,0.5,1].forEach(f=>{
+    const wv=mn+(mx-mn)*f, yy=Y(wv);
+    svg+='<line x1="'+padL+'" y1="'+yy+'" x2="'+(W-padR)+'" y2="'+yy+'" stroke="#e3ece6" stroke-width="1"/>';
+    svg+='<text x="'+(padL-4)+'" y="'+(yy+3)+'" font-size="8" fill="#9aa8a1" text-anchor="end">'+wv.toFixed(1)+'</text>';
+  });
+  // x 標（D1 / D14 + 已記錄的點）
+  pts.forEach(p=>{ svg+='<text x="'+X(p.d)+'" y="'+(H-6)+'" font-size="8" fill="#9aa8a1" text-anchor="middle">D'+p.d+'</text>'; });
+  // 折線
+  if(pts.length>=2){
+    const line=pts.map(p=>X(p.d)+','+Y(p.w)).join(' ');
+    svg+='<polyline points="'+line+'" fill="none" stroke="#2faa6e" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>';
+  }
+  // 點 + 數值
+  pts.forEach((p,i)=>{
+    const last=i===pts.length-1;
+    svg+='<circle cx="'+X(p.d)+'" cy="'+Y(p.w)+'" r="'+(last?4:3)+'" fill="'+(last?'#f08a3c':'#2faa6e')+'"/>';
+    svg+='<text x="'+X(p.d)+'" y="'+(Y(p.w)-7)+'" font-size="8.5" fill="'+(last?'#d96f1f':'#1f7d50')+'" font-weight="700" text-anchor="middle">'+p.w.toFixed(1)+'</text>';
+  });
+  document.getElementById("chart").innerHTML=svg;
 }
 
 /* ============ 動作 ============ */
@@ -398,17 +470,19 @@ document.getElementById("checkinBtn").onclick = ()=>{
   // 里程碑彈窗
   if(cc===3) popup("🔥","火苗徽章 GET！","連續打卡 3 天，火苗點亮，繼續保持！");
   else if(cc===7) popup("🎉","半程慶典！","打卡滿 7 天，第一週大任務完成，抽轉盤囉！");
-  else if(cc>=WIN && S.w0 && S.w1) popup("🏆","完賽達標！","保證金 $500 全額折抵產品券，你做到了！");
+  else if(cc>=WIN && hasFullData()) popup("🏆","完賽達標！","保證金 $500 全額折抵產品券，你做到了！");
   else toast("打卡成功！火苗 "+streak()+" 🔥");
   render();
 };
 
-document.getElementById("saveData").onclick = ()=>{
-  S.w0 = document.getElementById("w0").value.trim();
-  S.w1 = document.getElementById("w1").value.trim();
+document.getElementById("saveWeight").onclick = ()=>{
+  const v = document.getElementById("wday").value.trim();
+  if(v==="" || isNaN(parseFloat(v))){ toast("請先填今天的體重"); return; }
+  S.weights[S.day] = parseFloat(v);
+  if(!todayChecked()) S.todayTasks[0] = true; // 量體重 → 自動勾「晨間量體重」
   save(); render();
-  toast("數據已儲存");
-  if(S.checked.length>=WIN && S.w0 && S.w1) popup("🏆","完賽達標！","保證金 $500 全額折抵產品券，你做到了！");
+  toast("Day "+S.day+" 體重已記錄");
+  if(S.checked.length>=WIN && hasFullData()) popup("🏆","完賽達標！","保證金 $500 全額折抵產品券，你做到了！");
 };
 
 function popup(ico,title,text){
@@ -420,7 +494,15 @@ function popup(ico,title,text){
 function closeModal(){ document.getElementById("modal").classList.remove("show"); }
 
 /* demo 控制 */
-function quickFill(){ S.todayTasks=[true,true,true,true,true,true]; save(); render(); toast("今日 6 項已完成，按打卡點亮"); }
+function quickFill(){
+  S.todayTasks=[true,true,true,true,true,true];
+  // 試玩用：自動帶一條緩降的體重（每天約減 0.2kg，帶點起伏）
+  if(wVal(S.day)===null){
+    const wiggle=[0,.1,-.1,0,.1,-.1,0][S.day%7];
+    S.weights[S.day]=parseFloat((62 - (S.day-1)*0.25 + wiggle).toFixed(1));
+  }
+  save(); render(); toast("今日 6 項已完成，按打卡點亮");
+}
 function nextDay(){
   if(S.day>=TOTAL){ toast("已是最後一天 Day 14"); return; }
   S.day++; S.todayTasks=[false,false,false,false,false,false]; save(); render();
