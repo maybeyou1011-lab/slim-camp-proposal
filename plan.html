@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>60天瘦身營・活動企劃書</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --green: #2faa6e; --green-d: #1f7d50;
+    --orange: #f08a3c; --orange-d: #d96f1f;
+    --ink: #2b2b2b; --muted: #6f7b76; --bg: #f4f8f5;
+    --card: #ffffff; --line: #e3ece6;
+  }
+  body {
+    font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+    color: var(--ink); background: var(--bg); line-height: 1.75; -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+
+  header {
+    background: linear-gradient(135deg, var(--green) 0%, #38b87c 60%, var(--orange) 140%);
+    color: #fff; padding: 50px 20px 54px; text-align: center;
+  }
+  header .badge {
+    display: inline-block; background: rgba(255,255,255,.22); padding: 5px 16px;
+    border-radius: 999px; font-size: 13px; letter-spacing: 2px; margin-bottom: 14px;
+  }
+  header h1 { font-size: 32px; font-weight: 800; letter-spacing: 1px; }
+  header h1 span { display: block; font-size: 15px; font-weight: 400; opacity: .92; margin-top: 12px; }
+  header .info { margin-top: 18px; font-size: 13px; opacity: .9; }
+
+  .back {
+    display: inline-block; margin: 22px 0 0; color: var(--green-d); text-decoration: none;
+    font-size: 14px; font-weight: 700;
+  }
+  .back:hover { text-decoration: underline; }
+
+  section.blk { margin: 26px 0; background: var(--card); border-radius: 18px; padding: 26px 28px; box-shadow: 0 6px 24px rgba(31,125,80,.07); }
+  section.blk h2 { font-size: 21px; color: var(--green-d); margin-bottom: 4px; display: flex; align-items: center; gap: 10px; }
+  section.blk h2 .n { background: var(--green); color: #fff; width: 30px; height: 30px; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; font-size: 15px; flex: none; }
+  section.blk .lead { color: var(--muted); font-size: 14.5px; margin: 8px 0 14px; }
+
+  h3.sub { font-size: 16px; margin: 18px 0 6px; color: var(--ink); }
+  ul.clean { list-style: none; }
+  ul.clean li { padding-left: 22px; position: relative; margin-bottom: 6px; font-size: 15px; }
+  ul.clean li::before { content: "•"; position: absolute; left: 4px; color: var(--green); font-weight: 800; }
+
+  .stage { border-left: 4px solid var(--green); background: var(--bg); border-radius: 0 12px 12px 0; padding: 14px 18px; margin: 12px 0; }
+  .stage h4 { font-size: 16px; color: var(--green-d); }
+  .stage .day { font-size: 13px; color: var(--orange-d); font-weight: 700; }
+  .stage p { font-size: 14.5px; margin-top: 4px; }
+
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14.5px; }
+  th, td { padding: 11px 12px; border-bottom: 1px solid var(--line); text-align: left; }
+  th { background: #eef5f0; font-size: 13px; }
+  td:first-child { font-weight: 700; color: var(--ink); width: 30%; }
+
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .plan-card { border-radius: 14px; padding: 18px; color: #fff; }
+  .plan-card.a { background: linear-gradient(135deg, var(--green), var(--green-d)); }
+  .plan-card.b { background: linear-gradient(135deg, var(--orange), var(--orange-d)); }
+  .plan-card h4 { font-size: 17px; margin-bottom: 8px; }
+  .plan-card ul { list-style: none; font-size: 14px; }
+  .plan-card li { margin-bottom: 5px; padding-left: 18px; position: relative; }
+  .plan-card li::before { content: "›"; position: absolute; left: 2px; }
+
+  .note { background: #fdf2e7; border-radius: 12px; padding: 14px 18px; font-size: 14px; margin-top: 12px; }
+
+  footer { text-align: center; padding: 30px 20px 60px; color: var(--muted); font-size: 13px; }
+
+  @media (max-width: 700px) {
+    header h1 { font-size: 25px; }
+    .two { grid-template-columns: 1fr; }
+    td:first-child { width: 38%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">美你的事國際・資訊部</div>
+  <h1>60天瘦身營・活動企劃書
+    <span>個人闖關打卡 × 專屬網站 × 益生菌＋蛋白飲</span>
+  </h1>
+  <div class="info">文件第一版 ・ 製作單位 資訊部 ・ 2026-06-22</div>
+</header>
+
+<div class="wrap">
+  <a class="back" href="./">← 回兩案比較頁</a>
+
+  <section class="blk">
+    <h2><span class="n">1</span>活動總覽</h2>
+    <ul class="clean">
+      <li>活動名稱：60天瘦身營（暫定）</li>
+      <li>活動天數：60 天，前後另含報名期 7 天、收尾期 7 天，總時程約 74 天</li>
+      <li>活動性質：個人闖關打卡式線上瘦身挑戰，搭配公司益生菌與蛋白飲</li>
+      <li>執行載體：專屬活動網站，金流走綠界</li>
+      <li>核心精神：用遊戲化方式陪大家走完 60 天，把減重變成每天想回來打卡的有趣挑戰，同時自然帶動產品使用與回購</li>
+    </ul>
+  </section>
+
+  <section class="blk">
+    <h2><span class="n">2</span>活動目標與對象</h2>
+    <h3 class="sub">商業目標</h3>
+    <ul class="clean">
+      <li>帶動益生菌與蛋白飲的套組銷售與後續回購</li>
+      <li>養出一批有實際成果、願意分享的用戶，產出社群素材</li>
+      <li>建立可重複舉辦的活動模型，未來每季開一期</li>
+    </ul>
+    <h3 class="sub">主要對象</h3>
+    <ul class="clean">
+      <li>想瘦身但缺乏動力與陪伴的人，以女性為主</li>
+      <li>公司現有名單與會員，可優先邀請</li>
+      <li>透過揪團與分享自然擴散的新客</li>
+    </ul>
+    <div class="note">每人目標：系統依起始體重，建議 60 天合理減重約為體重的 5～8%，強調健康減重、不主打極端數字。</div>
+  </section>
+
+  <section class="blk">
+    <h2><span class="n">3</span>商業模式（兩案並陳，待老闆拍板）</h2>
+    <div class="two">
+      <div class="plan-card a">
+        <h4>方案一　純買套組制</h4>
+        <ul>
+          <li>報名＝買 60 天產品套組，營隊免費送</li>
+          <li>建議 5,980（早鳥 4,980）</li>
+          <li>金流單純、出貨量大、可馬上上線</li>
+          <li>門檻較高、少了博弈刺激</li>
+        </ul>
+      </div>
+      <div class="plan-card b">
+        <h4>方案二　押金抵產品制</h4>
+        <ul>
+          <li>套組 3,980 ＋ 保證金 2,000</li>
+          <li>完賽折抵產品不退現金</li>
+          <li>黏著度高、帶第二次回購</li>
+          <li>金流規則較複雜、條款要寫死</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note">建議：可先以方案一上線驗證市場，後續再升級為方案二，風險最低。定價為建議區間，依產品成本與毛利再調整。</div>
+  </section>
+
+  <section class="blk">
+    <h2><span class="n">4</span>活動賽程</h2>
+
+    <div class="stage">
+      <span class="day">開營前 7 天</span>
+      <h4>報名期</h4>
+      <p>填基本資料、量起始體重三圍體脂並上傳照片（對照基準）、系統設個人目標、開放揪團報名享折扣、開營直播或開營信教學打卡。</p>
+    </div>
+    <div class="stage">
+      <span class="day">Day 1–15</span>
+      <h4>第一階段　暖身啟動期</h4>
+      <p>每日任務：晨間量體重、早晚各一杯蛋白飲、補益生菌、喝水 2000cc、走 5000 步。重點先養成每天打卡習慣。每週主題：第 1 週戒含糖飲、第 2 週每餐拍照。</p>
+    </div>
+    <div class="stage">
+      <span class="day">Day 16–30</span>
+      <h4>第二階段　習慣養成期</h4>
+      <p>任務加入原型食物餐、睡前不進食。Day 30 期中里程碑：解鎖半程徽章、公布期中排行榜、辦大轉盤抽獎。每週主題：第 3 週原型食物、第 4 週每天運動 20 分。</p>
+    </div>
+    <div class="stage">
+      <span class="day">Day 31–45</span>
+      <h4>第三階段　燃脂加速期</h4>
+      <p>加入運動強度（深蹲／快走／跳繩擇一），開始衝數字，排行榜競爭白熱化。每週主題：第 5 週減醣週、第 6 週 7000 步進階。</p>
+    </div>
+    <div class="stage">
+      <span class="day">Day 46–60</span>
+      <h4>第四階段　衝刺驗收期</h4>
+      <p>維持任務並加強每日打氣。Day 60 完賽驗收：量結束體重三圍體脂、上傳結業照。每週主題：第 7 週最後衝刺、第 8 週成果定格。</p>
+    </div>
+    <div class="stage">
+      <span class="day">Day 61–67</span>
+      <h4>收尾期</h4>
+      <p>完賽典禮頒獎直播；方案二進行押金結算與折抵；公開成果牆（需授權）作社群素材；推完賽續購優惠，導入下一期。</p>
+    </div>
+  </section>
+
+  <section class="blk">
+    <h2><span class="n">5</span>貫穿全程的固定活動</h2>
+    <table>
+      <tr><th>活動</th><th>頻率</th><th>內容</th></tr>
+      <tr><td>每日打卡</td><td>每天</td><td>量體重＋任務卡，是活動核心動作</td></tr>
+      <tr><td>連續火苗</td><td>每天</td><td>連續天數越多火越大，斷一天歸零</td></tr>
+      <tr><td>里程碑徽章</td><td>7／30／60 天</td><td>解鎖專屬徽章可分享炫耀</td></tr>
+      <tr><td>排行榜</td><td>即時</td><td>減重%／打卡天數雙榜，週月總冠軍</td></tr>
+      <tr><td>抽獎轉盤</td><td>集點換</td><td>打卡集點換轉盤，抽產品或小禮</td></tr>
+      <tr><td>每週主題</td><td>每週</td><td>每週換花樣，完成多拿點數</td></tr>
+      <tr><td>前後對比牆</td><td>期中＋結業</td><td>上傳前後照，最會被自然分享</td></tr>
+      <tr><td>復活卡</td><td>不定</td><td>斷簽用點數復活，降低放棄率</td></tr>
+      <tr><td>監督好友</td><td>全程</td><td>綁一位督促人互相盯</td></tr>
+    </table>
+  </section>
+
+  <section class="blk">
+    <h2><span class="n">6</span>獎勵時程與預算框架</h2>
+    <h3 class="sub">主要獎勵節點</h3>
+    <ul class="clean">
+      <li>Day 7：首週全勤小禮＋半程倒數提醒</li>
+      <li>Day 30：期中大轉盤抽獎＋半程徽章</li>
+      <li>Day 45：燃脂衝刺加碼獎</li>
+      <li>Day 60：完賽獎、週月總三大冠軍、最佳對比獎、全勤獎</li>
+    </ul>
+    <h3 class="sub">獎品方向與預算</h3>
+    <ul class="clean">
+      <li>以公司產品為主（益生菌、蛋白飲、產品券），成本可控又帶動使用習慣</li>
+      <li>搭配少量實體小禮提升驚喜感</li>
+      <li>預算框架：獎品成本、綠界手續費、製作與行銷、人力成本（實際數字待填）</li>
+    </ul>
+  </section>
+
+  <section class="blk">
+    <h2><span class="n">7</span>網站功能清單（開發範圍）</h2>
+    <h3 class="sub">會員與報名</h3>
+    <ul class="clean">
+      <li>報名表單、基本資料、目標設定</li>
+      <li>綠界金流串接（方案二另含保證金與退款／折抵邏輯）</li>
+      <li>揪團報名與折扣機制</li>
+    </ul>
+    <h3 class="sub">打卡與遊戲化</h3>
+    <ul class="clean">
+      <li>每日打卡、任務卡、體重數據記錄、連續火苗、里程碑徽章</li>
+      <li>即時排行榜（雙榜）、抽獎轉盤與集點、復活卡與點數、監督好友</li>
+    </ul>
+    <h3 class="sub">內容與後台</h3>
+    <ul class="clean">
+      <li>前後對比照上傳與成果牆、每週主題發布</li>
+      <li>報名訂單管理、打卡數據後台、獎勵抽獎設定、報表匯出</li>
+    </ul>
+  </section>
+
+  <section class="blk">
+    <h2><span class="n">8</span>執行時程與分工（建議）</h2>
+    <ul class="clean">
+      <li>確認商業模式與定價（老闆拍板）</li>
+      <li>網站開發與金流串接（資訊部）</li>
+      <li>活動素材與行銷規劃（行銷）</li>
+      <li>開放報名與暖身宣傳</li>
+      <li>正式開營，為期 60 天</li>
+      <li>完賽典禮與成果回收，導入回購</li>
+    </ul>
+  </section>
+
+  <section class="blk">
+    <h2><span class="n">9</span>風險與注意事項</h2>
+    <ul class="clean">
+      <li>健康責任：強調健康減重、避免極端做法，報名條款註明健康自負與免責</li>
+      <li>押金規則（方案二）：折抵、放棄判定、爭議處理需報名前明確公告</li>
+      <li>個資與肖像：前後對比照、結業照需取得明確授權</li>
+      <li>完賽判定：打卡與數據驗證方式事先訂清楚，避免造假爭議</li>
+    </ul>
+    <div class="note">本企劃為第一版骨架，待老闆選定商業模式後再細化定價、預算與分工。</div>
+  </section>
+
+  <a class="back" href="./">← 回兩案比較頁</a>
+</div>
+
+<footer>美你的事國際有限公司 ・ 資訊部 ・ 60天瘦身營活動企劃書</footer>
+
+</body>
+</html>
