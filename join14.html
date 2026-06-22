@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>14天瘦身營・體驗挑戰</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --green: #2faa6e; --green-d: #1f7d50; --green-l: #e6f4ec;
+    --orange: #f08a3c; --orange-d: #d96f1f;
+    --ink: #2b2b2b; --muted: #6f7b76; --bg: #f4f8f5;
+    --card: #fff; --line: #e3ece6;
+  }
+  body {
+    font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+    color: var(--ink); background: var(--bg); line-height: 1.75; -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 820px; margin: 0 auto; padding: 0 20px; }
+  .center { text-align: center; }
+
+  header {
+    background: linear-gradient(150deg, var(--green) 0%, #38b87c 55%, var(--orange) 145%);
+    color: #fff; padding: 60px 20px 70px; text-align: center;
+  }
+  header .kicker { display:inline-block; background: rgba(255,255,255,.22); padding: 6px 18px; border-radius: 999px; font-size: 14px; letter-spacing: 2px; margin-bottom: 18px; }
+  header h1 { font-size: 40px; font-weight: 800; letter-spacing: 1px; line-height: 1.3; }
+  header .slogan { font-size: 19px; margin-top: 16px; opacity: .96; font-weight: 500; }
+  header .sub { font-size: 15px; margin-top: 14px; opacity: .9; }
+  .cta {
+    display: inline-block; margin-top: 26px; background: #fff; color: var(--green-d);
+    padding: 16px 44px; border-radius: 999px; font-size: 19px; font-weight: 800;
+    text-decoration: none; box-shadow: 0 8px 24px rgba(0,0,0,.18); transition: .2s;
+  }
+  .cta:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,0,0,.24); }
+  .cta.orange { background: var(--orange); color: #fff; }
+
+  section { padding: 50px 0; }
+  section h2 { font-size: 27px; text-align: center; margin-bottom: 8px; }
+  section .lead { text-align: center; color: var(--muted); font-size: 15.5px; margin-bottom: 30px; }
+
+  .why { background:#fff; }
+  .why .box { max-width:600px; margin:0 auto; background:var(--green-l); border-radius:16px; padding:22px 26px; font-size:16px; text-align:center; }
+  .why .box b { color:var(--green-d); }
+
+  .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+  .step { background: #fff; border-radius: 18px; padding: 26px 20px; text-align: center; box-shadow: 0 6px 22px rgba(31,125,80,.08); }
+  .step .num { width: 44px; height: 44px; border-radius: 50%; background: var(--green); color: #fff; font-size: 20px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
+  .step h3 { font-size: 18px; margin-bottom: 8px; }
+  .step p { font-size: 14.5px; color: var(--muted); }
+  .step.mid .num { background: var(--orange); }
+
+  .rule-box { background: linear-gradient(135deg, var(--green-l), #fdf2e7); border-radius: 20px; padding: 32px; margin-top: 26px; }
+  .rule-box h3 { font-size: 20px; color: var(--green-d); margin-bottom: 16px; text-align: center; }
+  .rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .rule-item { background: #fff; border-radius: 14px; padding: 18px 20px; }
+  .rule-item .ico { font-size: 26px; }
+  .rule-item h4 { font-size: 16px; margin: 8px 0 4px; }
+  .rule-item p { font-size: 14px; color: var(--muted); }
+  .rule-item.win { border-left: 4px solid var(--green); }
+  .rule-item.lose { border-left: 4px solid var(--orange-d); }
+
+  .stage { background: #fff; border-radius: 14px; padding: 16px 20px; margin: 12px 0; border-left: 4px solid var(--green); display: flex; gap: 16px; align-items: flex-start; }
+  .stage .d { flex: none; background: var(--green-l); color: var(--green-d); font-weight: 700; font-size: 13px; padding: 6px 10px; border-radius: 8px; white-space: nowrap; }
+  .stage h4 { font-size: 16.5px; }
+  .stage p { font-size: 14.5px; color: var(--muted); margin-top: 2px; }
+
+  .tasks { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; max-width: 640px; margin: 0 auto; }
+  .task { background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 11px 20px; font-size: 15.5px; box-shadow: 0 3px 10px rgba(31,125,80,.05); }
+
+  .fun { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .fun .f { background: #fff; border-radius: 14px; padding: 20px; text-align: center; border: 1px solid var(--line); }
+  .fun .f .i { font-size: 30px; }
+  .fun .f h4 { font-size: 16px; margin: 8px 0 4px; }
+  .fun .f p { font-size: 13.5px; color: var(--muted); }
+
+  .pricecard { background: #fff; border-radius: 22px; max-width: 460px; margin: 0 auto; box-shadow: 0 12px 36px rgba(31,125,80,.14); overflow: hidden; border: 2px solid var(--green); }
+  .pricecard .ph { background: linear-gradient(135deg, var(--green), var(--green-d)); color: #fff; padding: 22px; text-align: center; }
+  .pricecard .ph .t { font-size: 16px; opacity: .9; }
+  .pricecard .ph .big { font-size: 44px; font-weight: 800; margin: 4px 0; }
+  .pricecard .ph .big small { font-size: 17px; font-weight: 500; }
+  .pricecard .pb { padding: 24px 28px; }
+  .pricecard .line2 { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 15.5px; }
+  .pricecard .line2 b { color: var(--green-d); }
+  .pricecard .hl { background: var(--green-l); border-radius: 12px; padding: 14px 16px; margin-top: 16px; font-size: 14.5px; }
+  .pricecard .hl b { color: var(--green-d); }
+
+  .faq { max-width: 700px; margin: 0 auto; }
+  details { background: #fff; border-radius: 12px; padding: 4px 20px; margin-bottom: 12px; border: 1px solid var(--line); }
+  summary { font-size: 16px; font-weight: 700; padding: 14px 0; cursor: pointer; list-style: none; position: relative; padding-right: 28px; }
+  summary::after { content: "+"; position: absolute; right: 0; top: 12px; font-size: 22px; color: var(--green); }
+  details[open] summary::after { content: "−"; }
+  details p { padding: 0 0 16px; font-size: 14.5px; color: #444; }
+
+  .terms { background: #fff; border-radius: 14px; padding: 24px 28px; font-size: 14px; color: var(--muted); }
+  .terms li { margin-bottom: 8px; padding-left: 20px; position: relative; list-style: none; }
+  .terms li::before { content: "▪"; position: absolute; left: 2px; color: var(--green); }
+
+  .final { background: linear-gradient(150deg, var(--green-d), var(--orange-d)); color: #fff; text-align: center; padding: 56px 20px; }
+  .final h2 { color: #fff; }
+  .final p { opacity: .95; margin: 10px 0 6px; font-size: 16px; }
+
+  footer { text-align: center; padding: 26px 20px 50px; color: var(--muted); font-size: 13px; }
+  .draft { background: #fff4e5; color: var(--orange-d); text-align: center; font-size: 13px; padding: 8px; }
+
+  @media (max-width: 700px) {
+    header h1 { font-size: 30px; }
+    .steps, .fun { grid-template-columns: 1fr; }
+    .rule-grid { grid-template-columns: 1fr; }
+    .stage { flex-direction: column; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="draft">這是 14 天體驗版規則說明草稿頁，價格與開放時間以正式公告為準</div>
+
+<header>
+  <div class="kicker">美你的事・益生菌＋蛋白飲</div>
+  <h1>14天瘦身營</h1>
+  <div class="slogan">兩週體驗版：先試試看，養成習慣、把保證金賺回來</div>
+  <div class="sub">門檻低 ・ 兩週見效 ・ 每日打卡 ・ 完賽折抵產品 ・ 放棄錢被分走</div>
+  <a class="cta" href="#join">我要報名 →</a>
+</header>
+
+<!-- 為什麼14天 -->
+<section class="why">
+  <div class="wrap">
+    <h2>為什麼先玩 14 天？</h2>
+    <div class="box">
+      還不想一次承諾 60 天？<b>14 天剛剛好</b>——足夠養成打卡習慣、看到第一波改變，又不會壓力太大。玩得起勁，再升級 60 天完整營。
+    </div>
+  </div>
+</section>
+
+<!-- 三步驟 -->
+<section>
+  <div class="wrap">
+    <h2>怎麼玩？三步驟</h2>
+    <div class="lead">押金制玩法：押一筆錢進場，逼自己撐完兩週</div>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>報名押金</h3>
+        <p>買 14 天體驗套組（益生菌＋蛋白飲），再押一筆保證金，正式進場。</p>
+      </div>
+      <div class="step mid">
+        <div class="num">2</div>
+        <h3>每天打卡闖關</h3>
+        <p>14 天每天量體重、喝蛋白飲、完成任務卡，連續打卡養火苗、衝排行榜。</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>完賽把錢賺回</h3>
+        <p>完賽：保證金全額折抵產品券拿回。放棄：保證金被完賽者分走。</p>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <h3>💰 押金規則（看這裡就懂）</h3>
+      <div class="rule-grid">
+        <div class="rule-item win">
+          <div class="ico">🏆</div>
+          <h4>完賽（打卡達標）</h4>
+          <p>保證金 500 元全額折抵成等值產品券，等於錢變成產品拿回來，還能分到放棄者的加碼獎。</p>
+        </div>
+        <div class="rule-item lose">
+          <div class="ico">🚪</div>
+          <h4>中途放棄／未達標</h4>
+          <p>保證金不退，轉入完賽者的加碼獎池。一旦報名，撐到底最划算。</p>
+        </div>
+      </div>
+      <p style="margin-top:16px;font-size:14px;text-align:center;color:var(--muted);">
+        完賽認定：14 天內累積打卡達 <b style="color:var(--green-d)">12 天（八成）</b>以上，且完成期初與結業的體重數據上傳。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- 賽程 -->
+<section style="background:#fff;">
+  <div class="wrap">
+    <h2>14 天怎麼進行</h2>
+    <div class="lead">兩週分三段，循序漸進，輕鬆上手</div>
+    <div class="stage"><div class="d">報名期</div><div><h4>暖身準備</h4><p>填資料、量起始體重三圍體脂、上傳當天照片當對照，揪好友一起報名更便宜。</p></div></div>
+    <div class="stage"><div class="d">Day 1–5</div><div><h4>啟動期</h4><p>養成每天打卡習慣：量體重、喝蛋白飲、補益生菌、喝水、走 5000 步，先戒含糖飲。</p></div></div>
+    <div class="stage"><div class="d">Day 6–10</div><div><h4>加速期</h4><p>加入原型食物與輕運動（深蹲／快走擇一）。Day 7 解鎖半程徽章、半程轉盤抽獎。</p></div></div>
+    <div class="stage"><div class="d">Day 11–14</div><div><h4>衝刺驗收期</h4><p>最後衝刺，Day 14 量結束數據、上傳結業照，完成兩週挑戰。</p></div></div>
+  </div>
+</section>
+
+<!-- 每日任務 -->
+<section>
+  <div class="wrap">
+    <h2>每天要做什麼</h2>
+    <div class="lead">都是小事，每天做就有效，打卡才算數</div>
+    <div class="tasks">
+      <div class="task">⚖️ 晨間量體重</div>
+      <div class="task">🥤 早晚各一杯蛋白飲</div>
+      <div class="task">💊 補充益生菌</div>
+      <div class="task">💧 喝水 2000cc</div>
+      <div class="task">🚶 走 5000 步</div>
+      <div class="task">📸 完成當日任務卡</div>
+    </div>
+  </div>
+</section>
+
+<!-- 好玩機制 -->
+<section style="background:#fff;">
+  <div class="wrap">
+    <h2>讓你捨不得斷的機制</h2>
+    <div class="fun">
+      <div class="f"><div class="i">🔥</div><h4>連續火苗</h4><p>連幾天火越大，斷一天歸零，捨不得斷。</p></div>
+      <div class="f"><div class="i">🏅</div><h4>里程碑徽章</h4><p>第 3／7／14 天解鎖專屬徽章可炫耀。</p></div>
+      <div class="f"><div class="i">🏆</div><h4>即時排行榜</h4><p>減重%與打卡天數雙榜，挑戰冠軍有獎。</p></div>
+      <div class="f"><div class="i">🎡</div><h4>抽獎轉盤</h4><p>打卡集點換轉盤，抽產品與好禮。</p></div>
+      <div class="f"><div class="i">❤️‍🩹</div><h4>復活卡</h4><p>不小心斷簽，用點數復活救回連勝。</p></div>
+      <div class="f"><div class="i">📸</div><h4>前後對比牆</h4><p>上傳前後照，見證自己兩週的改變。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 費用 -->
+<section id="join">
+  <div class="wrap">
+    <h2>報名費用</h2>
+    <div class="lead">兩週體驗價，完賽把保證金賺回來</div>
+    <div class="pricecard">
+      <div class="ph">
+        <div class="t">14天瘦身營・體驗版</div>
+        <div class="big">$1,780<small> 元</small></div>
+        <div class="t">體驗套組 ＋ 可拿回的保證金</div>
+      </div>
+      <div class="pb">
+        <div class="line2"><span>體驗套組（14天益生菌＋蛋白飲）</span><b>$1,280</b></div>
+        <div class="line2"><span>完賽保證金（完賽折抵產品）</span><b>$500</b></div>
+        <div class="hl">
+          ✅ <b>完賽即把 $500 保證金折抵成產品券</b>拿回，等於只花套組的錢就玩完整個挑戰，還可能分到放棄者的加碼獎。
+        </div>
+      </div>
+    </div>
+    <div class="center" style="margin-top:30px;">
+      <a class="cta orange" href="https://lin.ee/9z3ohzd" target="_blank" rel="noopener">加 LINE 報名／詢問 →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section style="background:#fff;">
+  <div class="wrap">
+    <h2>常見問題</h2>
+    <div class="faq" style="margin-top:20px;">
+      <details><summary>14 天真的有效嗎？</summary><p>14 天主要幫你養成每天打卡、規律補充與運動的習慣，多數人會看到體態與精神的第一波改變。想要更明顯的成果，可接著升級 60 天完整營。</p></details>
+      <details><summary>保證金一定拿得回來嗎？</summary><p>只要完賽（14 天內打卡達 12 天以上，並完成期初與結業數據上傳），保證金 500 元就全額折抵成等值產品券拿回。沒有完賽則保證金不退。</p></details>
+      <details><summary>什麼情況算「沒完賽」？</summary><p>中途退出，或 14 天內打卡未達 12 天，或沒有完成結業數據上傳，都算未完賽，保證金不退並轉入完賽者的加碼獎池。</p></details>
+      <details><summary>一天忘記打卡會怎樣？</summary><p>連續火苗會歸零，但可用復活卡救回。只要 14 天累積打卡達標，仍算完賽。</p></details>
+      <details><summary>玩完可以接 60 天嗎？</summary><p>可以！完成 14 天體驗的人，升級 60 天完整營享專屬優惠，無縫接續不斷檔。</p></details>
+      <details><summary>我有慢性病可以參加嗎？</summary><p>本活動為健康生活習慣養成，非醫療行為。若有特殊健康狀況，請先諮詢醫師，並衡量自身狀況參加。</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- 報名須知 -->
+<section>
+  <div class="wrap">
+    <h2>報名須知</h2>
+    <div class="terms" style="margin-top:20px;">
+      <ul>
+        <li>本活動強調健康減重，請勿採取極端做法；參加者應衡量自身健康狀況，活動不負醫療責任。</li>
+        <li>保證金折抵與放棄處理規則如上述，報名即視為同意；爭議以主辦單位公告為準。</li>
+        <li>完賽認定以系統打卡紀錄與數據上傳為準，禁止造假，違者取消資格且保證金不退。</li>
+        <li>前後對比照、結業照如需用於公開宣傳，將另取得本人授權。</li>
+        <li>正式價格、開放時間與名額以官方公告為準。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 結尾 -->
+<section class="final">
+  <div class="wrap">
+    <h2>14 天，先給自己一個開始</h2>
+    <p>不用一次拚 60 天，先用兩週證明你做得到。</p>
+    <p>押下保證金，給自己一個非完成不可的理由。</p>
+    <a class="cta" href="https://lin.ee/9z3ohzd" target="_blank" rel="noopener" style="margin-top:24px;">加 LINE 報名 →</a>
+  </div>
+</section>
+
+<footer>美你的事國際有限公司 ・ 14天瘦身營（體驗版）</footer>
+
+</body>
+</html>
