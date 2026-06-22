@@ -78,6 +78,17 @@
   .legend { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-top: 22px; font-size: 13px; color: var(--muted); }
   .phaseband { display: flex; gap: 10px; margin: 22px 0 4px; }
   .phaseband .pz { flex: 1; text-align: center; font-size: 13px; font-weight: 700; color: var(--green-d); background: var(--green-l); border-radius: 10px; padding: 8px 4px; }
+  /* 任務分層：每日任務小標 + 7天大任務卡 */
+  .ttl { font-size: 19px; text-align: center; margin: 34px 0 16px; color: var(--green-d); }
+  .tnote { text-align: center; color: var(--muted); font-size: 14px; margin-top: 14px; }
+  .bigtasks { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .bigtask { border-radius: 18px; padding: 24px; color: #fff; box-shadow: 0 8px 24px rgba(31,125,80,.12); }
+  .bigtask.w1 { background: linear-gradient(135deg, var(--green), var(--green-d)); }
+  .bigtask.w2 { background: linear-gradient(135deg, var(--orange), var(--orange-d)); }
+  .bigtask .wk { font-size: 13px; opacity: .92; letter-spacing: 1px; font-weight: 700; }
+  .bigtask h4 { font-size: 21px; margin: 5px 0 14px; }
+  .bigtask .goal { background: rgba(255,255,255,.2); border-radius: 12px; padding: 12px 16px; font-size: 14.5px; margin-bottom: 12px; }
+  .bigtask .reward { font-size: 14.5px; line-height: 1.75; }
 
   .tasks { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; max-width: 640px; margin: 0 auto; }
   .task { background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 11px 20px; font-size: 15.5px; box-shadow: 0 3px 10px rgba(31,125,80,.05); }
@@ -125,6 +136,7 @@
     .cal { grid-template-columns: repeat(3, 1fr); gap: 8px; }
     .phaseband { flex-direction: column; }
     .day .e { font-size: 23px; }
+    .bigtasks { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -187,9 +199,38 @@
 <!-- 賽程 -->
 <section style="background:#fff;">
   <div class="wrap">
-    <h2>14 天每天都有梗</h2>
-    <div class="lead">不是枯燥的減肥——每天一個小挑戰，還有徽章日、轉盤日、完賽日等你解鎖</div>
+    <h2>任務怎麼設計</h2>
+    <div class="lead">每天有固定任務，每 7 天再挑戰一個大任務，難度循序漸進</div>
 
+    <h3 class="ttl">🟢 每天都要做（每日任務）</h3>
+    <div class="tasks">
+      <div class="task">⚖️ 晨間量體重</div>
+      <div class="task">🥛 早晚各一杯蛋白飲</div>
+      <div class="task">💊 補充益生菌</div>
+      <div class="task">💧 喝水 2000cc</div>
+      <div class="task">🚶 走 5000 步</div>
+      <div class="task">📸 完成當日打卡</div>
+    </div>
+    <p class="tnote">每天 6 項全部完成才算當日打卡，連續不斷養火苗、衝排行榜。</p>
+
+    <h3 class="ttl" style="color:var(--orange-d);">🏆 每 7 天一個大任務</h3>
+    <div class="bigtasks">
+      <div class="bigtask w1">
+        <div class="wk">第一週 ・ Day 1–7</div>
+        <h4>七日習慣養成戰</h4>
+        <div class="goal">🎯 大任務目標：<b>連續打卡 7 天不中斷</b></div>
+        <div class="reward">本週重點：戒含糖飲、喝足水、規律補充益生菌與蛋白飲<br>🎁 第 7 天半程慶典：解鎖火苗徽章 ＋ 抽大轉盤</div>
+      </div>
+      <div class="bigtask w2">
+        <div class="wk">第二週 ・ Day 8–14</div>
+        <h4>七日燃脂衝刺戰</h4>
+        <div class="goal">🎯 大任務目標：<b>14 天打卡達標 ＋ 上傳結業數據</b></div>
+        <div class="reward">本週重點：吃原型食物、加入運動、減醣<br>🏆 第 14 天完賽典禮：達標領獎 ＋ 保證金折抵產品</div>
+      </div>
+    </div>
+
+    <h3 class="ttl" style="color:var(--ink);">📅 14 天總覽</h3>
+    <div class="lead" style="margin-bottom:16px;">每天一個小主題，兩個橘框就是 7 天大任務的驗收日</div>
     <div class="stage" style="border-left-color:var(--orange);"><div class="d" style="background:#fff7ef;color:var(--orange-d);">報名期</div><div><h4>暖身準備</h4><p>填資料、量起始體重三圍體脂、上傳當天照片當對照，揪好友一起報名更便宜。</p></div></div>
 
     <div class="phaseband">
@@ -223,24 +264,8 @@
   </div>
 </section>
 
-<!-- 每日任務 -->
-<section>
-  <div class="wrap">
-    <h2>每天要做什麼</h2>
-    <div class="lead">都是小事，每天做就有效，打卡才算數</div>
-    <div class="tasks">
-      <div class="task">⚖️ 晨間量體重</div>
-      <div class="task">🥤 早晚各一杯蛋白飲</div>
-      <div class="task">💊 補充益生菌</div>
-      <div class="task">💧 喝水 2000cc</div>
-      <div class="task">🚶 走 5000 步</div>
-      <div class="task">📸 完成當日任務卡</div>
-    </div>
-  </div>
-</section>
-
 <!-- 好玩機制 -->
-<section style="background:#fff;">
+<section>
   <div class="wrap">
     <h2>讓你捨不得斷的機制</h2>
     <div class="fun">
@@ -255,7 +280,7 @@
 </section>
 
 <!-- 費用 -->
-<section id="join">
+<section id="join" style="background:#fff;">
   <div class="wrap">
     <h2>報名費用</h2>
     <div class="lead">一次付清，完賽把保證金賺回來</div>
@@ -280,7 +305,7 @@
 </section>
 
 <!-- FAQ -->
-<section style="background:#fff;">
+<section>
   <div class="wrap">
     <h2>常見問題</h2>
     <div class="faq" style="margin-top:20px;">
@@ -294,7 +319,7 @@
 </section>
 
 <!-- 報名須知 -->
-<section>
+<section style="background:#fff;">
   <div class="wrap">
     <h2>報名須知</h2>
     <div class="terms" style="margin-top:20px;">
