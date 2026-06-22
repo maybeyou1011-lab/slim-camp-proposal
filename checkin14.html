@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>14天瘦身營・打卡闖關</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --green: #2faa6e; --green-d: #1f7d50; --green-l: #e6f4ec;
+    --orange: #f08a3c; --orange-d: #d96f1f; --orange-l: #fdf2e7;
+    --ink: #2b2b2b; --muted: #6f7b76; --bg: #f4f8f5;
+    --card: #fff; --line: #e3ece6; --gold: #f4b942;
+  }
+  body {
+    font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+    color: var(--ink); background: var(--bg); line-height: 1.7; -webkit-font-smoothing: antialiased;
+    padding-bottom: 40px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+
+  .draft { background: #fff4e5; color: var(--orange-d); text-align: center; font-size: 13px; padding: 8px; }
+
+  /* 頂部狀態列 */
+  header {
+    background: linear-gradient(150deg, var(--green) 0%, #38b87c 55%, var(--orange) 145%);
+    color: #fff; padding: 26px 16px 30px; text-align: center;
+  }
+  header .kicker { display:inline-block; background: rgba(255,255,255,.22); padding: 5px 16px; border-radius: 999px; font-size: 13px; letter-spacing: 1.5px; margin-bottom: 12px; }
+  header h1 { font-size: 27px; font-weight: 800; }
+  header .hi { font-size: 15px; margin-top: 6px; opacity: .96; }
+
+  /* 統計三格 */
+  .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: -20px; position: relative; z-index: 2; }
+  .stat { background: #fff; border-radius: 16px; padding: 16px 10px; text-align: center; box-shadow: 0 8px 24px rgba(31,125,80,.1); }
+  .stat .v { font-size: 28px; font-weight: 800; color: var(--green-d); line-height: 1.1; }
+  .stat .v small { font-size: 15px; }
+  .stat .k { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+  .stat.fire .v { color: var(--orange-d); }
+
+  section { margin-top: 26px; }
+  .card { background: #fff; border-radius: 18px; padding: 22px; box-shadow: 0 6px 20px rgba(31,125,80,.06); }
+  .card h2 { font-size: 19px; color: var(--green-d); margin-bottom: 4px; }
+  .card .sub { font-size: 13.5px; color: var(--muted); margin-bottom: 16px; }
+
+  /* 完賽進度條 */
+  .prog { background: var(--green-l); border-radius: 999px; height: 16px; overflow: hidden; margin: 8px 0 6px; }
+  .prog .bar { height: 100%; background: linear-gradient(90deg, var(--green), var(--orange)); border-radius: 999px; transition: width .5s ease; width: 0; }
+  .prog-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); }
+  .prog-label b { color: var(--green-d); }
+  .win-flag { margin-top: 12px; background: linear-gradient(135deg, var(--green-l), var(--orange-l)); border-radius: 12px; padding: 12px 16px; font-size: 14px; text-align: center; display: none; }
+  .win-flag.show { display: block; }
+  .win-flag b { color: var(--green-d); }
+
+  /* 每日任務清單 */
+  .daytitle { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .daytitle .dnum { font-size: 15px; font-weight: 800; color: var(--orange-d); background: var(--orange-l); padding: 5px 14px; border-radius: 999px; }
+  .tasklist { display: flex; flex-direction: column; gap: 10px; }
+  .titem { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border: 1.5px solid var(--line); border-radius: 14px; cursor: pointer; transition: .15s; user-select: none; }
+  .titem:hover { border-color: var(--green); }
+  .titem .box { flex: none; width: 26px; height: 26px; border-radius: 8px; border: 2px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: 16px; color: #fff; transition: .15s; }
+  .titem .label { font-size: 15.5px; }
+  .titem .label .em { margin-right: 6px; }
+  .titem.done { border-color: var(--green); background: var(--green-l); }
+  .titem.done .box { background: var(--green); border-color: var(--green); }
+  .titem.done .label { color: var(--green-d); }
+  .titem.locked { opacity: .5; cursor: not-allowed; }
+
+  .checkin-btn { width: 100%; margin-top: 18px; background: var(--green); color: #fff; border: none; border-radius: 14px; padding: 16px; font-size: 17px; font-weight: 800; cursor: pointer; transition: .2s; }
+  .checkin-btn:hover { background: var(--green-d); }
+  .checkin-btn:disabled { background: #c7d6cd; cursor: not-allowed; }
+  .checkin-btn.done { background: var(--gold); color: #6b4e00; }
+  .hint { text-align: center; font-size: 13px; color: var(--muted); margin-top: 10px; }
+
+  /* 大任務 */
+  .bigtasks { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .bigtask { border-radius: 16px; padding: 18px; color: #fff; position: relative; overflow: hidden; }
+  .bigtask.w1 { background: linear-gradient(135deg, var(--green), var(--green-d)); }
+  .bigtask.w2 { background: linear-gradient(135deg, var(--orange), var(--orange-d)); }
+  .bigtask .wk { font-size: 12px; opacity: .92; letter-spacing: .5px; font-weight: 700; }
+  .bigtask h4 { font-size: 17px; margin: 4px 0 10px; }
+  .bigtask .miniprog { background: rgba(255,255,255,.25); border-radius: 999px; height: 10px; overflow: hidden; }
+  .bigtask .miniprog i { display: block; height: 100%; background: #fff; border-radius: 999px; transition: width .5s; }
+  .bigtask .pct { font-size: 13px; margin-top: 6px; }
+  .bigtask .chk { position: absolute; top: 14px; right: 16px; font-size: 22px; opacity: 0; transition: .3s; }
+  .bigtask.cleared .chk { opacity: 1; }
+
+  /* 徽章 */
+  .badges { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+  .badge { text-align: center; background: var(--bg); border: 1.5px dashed var(--line); border-radius: 14px; padding: 16px 8px; transition: .25s; }
+  .badge .ic { font-size: 34px; filter: grayscale(1); opacity: .4; transition: .25s; }
+  .badge .nm { font-size: 13px; font-weight: 700; margin-top: 6px; color: var(--muted); }
+  .badge .ds { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+  .badge.got { border: 1.5px solid var(--gold); background: #fffaf0; box-shadow: 0 6px 18px rgba(244,185,66,.18); }
+  .badge.got .ic { filter: none; opacity: 1; }
+  .badge.got .nm { color: var(--orange-d); }
+
+  /* 14天地圖 */
+  .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+  .day { background: var(--bg); border-radius: 12px; padding: 10px 4px 9px; text-align: center; border: 1px solid var(--line); position: relative; }
+  .day .n { font-size: 10.5px; color: var(--muted); font-weight: 800; }
+  .day .e { font-size: 20px; display: block; margin: 3px 0 2px; line-height: 1; }
+  .day .t { font-size: 10.5px; line-height: 1.3; color: var(--muted); }
+  .day.hot { border: 1.5px solid var(--orange); }
+  .day.checked { background: var(--green-l); border-color: var(--green); }
+  .day.checked .t { color: var(--green-d); }
+  .day.checked::after { content: "✓"; position: absolute; top: 3px; right: 5px; font-size: 11px; color: var(--green); font-weight: 800; }
+  .day.today { box-shadow: 0 0 0 3px rgba(240,138,60,.35); }
+
+  /* 數據上傳 demo */
+  .datarow { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+  .datarow label { flex: none; width: 92px; font-size: 14px; color: var(--muted); }
+  .datarow input { flex: 1; border: 1.5px solid var(--line); border-radius: 10px; padding: 10px 12px; font-size: 15px; }
+  .datarow .done-tag { color: var(--green-d); font-size: 13px; font-weight: 700; }
+
+  /* demo 控制列 */
+  .demobar { position: fixed; left: 0; right: 0; bottom: 0; background: rgba(43,43,43,.94); color: #fff; padding: 10px 14px; display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; font-size: 13px; z-index: 50; }
+  .demobar b { color: var(--gold); }
+  .demobar button { background: var(--orange); color: #fff; border: none; border-radius: 8px; padding: 7px 12px; font-size: 13px; font-weight: 700; cursor: pointer; }
+  .demobar button.ghost { background: rgba(255,255,255,.15); }
+
+  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
+  .modal-bg.show { display: flex; }
+  .modal { background: #fff; border-radius: 20px; max-width: 380px; width: 100%; padding: 32px 26px; text-align: center; }
+  .modal .big { font-size: 54px; }
+  .modal h3 { font-size: 23px; color: var(--green-d); margin: 8px 0; }
+  .modal p { font-size: 15px; color: var(--muted); }
+  .modal button { margin-top: 20px; background: var(--green); color: #fff; border: none; border-radius: 12px; padding: 13px 30px; font-size: 16px; font-weight: 800; cursor: pointer; }
+
+  .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: 70px; background: var(--ink); color: #fff; padding: 12px 22px; border-radius: 999px; font-size: 14.5px; font-weight: 600; z-index: 200; opacity: 0; transition: .3s; pointer-events: none; }
+  .toast.show { opacity: 1; bottom: 80px; }
+
+  @media (max-width: 560px) {
+    .bigtasks { grid-template-columns: 1fr; }
+    .cal { grid-template-columns: repeat(4, 1fr); }
+    .badges { grid-template-columns: repeat(3,1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="draft">這是 14 天瘦身營「打卡闖關」示範頁，所有進度只存在你這台裝置的瀏覽器，方便試玩流程；正式版會接會員登入與資料庫</div>
+
+<header>
+  <div class="kicker">美你的事・14天瘦身營</div>
+  <h1>我的打卡闖關</h1>
+  <div class="hi" id="hi">嗨，挑戰者！今天也要把火苗顧好 🔥</div>
+</header>
+
+<div class="wrap">
+
+  <!-- 統計 -->
+  <div class="stats">
+    <div class="stat"><div class="v" id="stDay">1<small>/14</small></div><div class="k">目前進度</div></div>
+    <div class="stat fire"><div class="v" id="stFire">0🔥</div><div class="k">連續火苗</div></div>
+    <div class="stat"><div class="v" id="stCheck">0<small>/12</small></div><div class="k">完賽打卡</div></div>
+  </div>
+
+  <!-- 完賽進度 -->
+  <section>
+    <div class="card">
+      <h2>🏆 完賽進度</h2>
+      <div class="sub">14 天內累積打卡達 12 天（八成）＋ 上傳期初與結業數據，即可完賽，保證金 $500 全額折抵產品券</div>
+      <div class="prog"><div class="bar" id="winBar"></div></div>
+      <div class="prog-label"><span>已打卡 <b id="winNow">0</b> 天</span><span>完賽門檻 12 天</span></div>
+      <div class="win-flag" id="winFlag">🎉 <b>恭喜完賽！</b>保證金 $500 已可折抵成等值產品券，記得到 LINE 領取！</div>
+    </div>
+  </section>
+
+  <!-- 今日任務 -->
+  <section>
+    <div class="card">
+      <div class="daytitle">
+        <h2 style="margin:0;">今日任務</h2>
+        <span class="dnum" id="dnum">DAY 1</span>
+      </div>
+      <div class="sub" id="daytheme" style="margin-bottom:14px;">🚩 開營出發 — 6 項全部完成才算當日打卡</div>
+      <div class="tasklist" id="tasklist"></div>
+      <button class="checkin-btn" id="checkinBtn" disabled>完成全部任務才能打卡</button>
+      <div class="hint" id="checkinHint">點上面每一項任務勾選，6 項都完成就能打卡</div>
+    </div>
+  </section>
+
+  <!-- 每週大任務 -->
+  <section>
+    <div class="card">
+      <h2>每週大任務</h2>
+      <div class="sub">每 7 天一個關卡，難度循序漸進</div>
+      <div class="bigtasks">
+        <div class="bigtask w1" id="bt1">
+          <div class="chk">✅</div>
+          <div class="wk">第一週 ・ Day 1–7</div>
+          <h4>七日習慣養成戰</h4>
+          <div class="miniprog"><i id="bt1bar"></i></div>
+          <div class="pct"><span id="bt1pct">0</span>/7 天　目標：連續打卡 7 天</div>
+        </div>
+        <div class="bigtask w2" id="bt2">
+          <div class="chk">✅</div>
+          <div class="wk">第二週 ・ Day 8–14</div>
+          <h4>七日燃脂衝刺戰</h4>
+          <div class="miniprog"><i id="bt2bar"></i></div>
+          <div class="pct"><span id="bt2pct">0</span>/7 天　目標：打卡達標＋結業數據</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 徽章 -->
+  <section>
+    <div class="card">
+      <h2>我的徽章牆</h2>
+      <div class="sub">闖關里程碑，解鎖可炫耀</div>
+      <div class="badges">
+        <div class="badge" id="bg3"><div class="ic">🔥</div><div class="nm">火苗徽章</div><div class="ds">打卡滿 3 天</div></div>
+        <div class="badge" id="bg7"><div class="ic">🎉</div><div class="nm">半程慶典</div><div class="ds">打卡滿 7 天</div></div>
+        <div class="badge" id="bg14"><div class="ic">🏆</div><div class="nm">完賽獎盃</div><div class="ds">完賽達標</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14天地圖 -->
+  <section>
+    <div class="card">
+      <h2>14 天闖關地圖</h2>
+      <div class="sub">打卡一天點亮一格，橘框是 7 天大任務驗收日</div>
+      <div class="cal" id="cal"></div>
+    </div>
+  </section>
+
+  <!-- 數據上傳 -->
+  <section>
+    <div class="card">
+      <h2>期初／結業數據</h2>
+      <div class="sub">完賽需上傳期初與結業體重（示範用，正式版可上傳前後對比照）</div>
+      <div class="datarow">
+        <label>期初體重</label>
+        <input type="number" id="w0" placeholder="例如 62.0" inputmode="decimal">
+        <span class="done-tag" id="w0tag"></span>
+      </div>
+      <div class="datarow">
+        <label>結業體重</label>
+        <input type="number" id="w1" placeholder="Day14 再填" inputmode="decimal">
+        <span class="done-tag" id="w1tag"></span>
+      </div>
+      <button class="checkin-btn" id="saveData" style="background:var(--orange);margin-top:6px;">儲存數據</button>
+    </div>
+  </section>
+
+</div>
+
+<!-- demo 控制列 -->
+<div class="demobar">
+  <span>🎮 試玩模式・目前 <b id="dbDay">Day 1</b></span>
+  <button onclick="quickFill()">一鍵完成今日</button>
+  <button onclick="nextDay()">前進一天 →</button>
+  <button class="ghost" onclick="resetAll()">重置</button>
+</div>
+
+<!-- 完賽彈窗 -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <div class="big" id="mIco">🎉</div>
+    <h3 id="mTitle">完賽達標！</h3>
+    <p id="mText"></p>
+    <button onclick="closeModal()">太棒了</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ 14 天主題與任務設定 ============ */
+const THEMES = [
+  {e:"🚩",t:"開營出發"},{e:"🍬",t:"戒糖日"},{e:"🔥",t:"火苗徽章"},{e:"💧",t:"喝水挑戰"},
+  {e:"🥛",t:"蛋白飲日"},{e:"🏃",t:"動起來"},{e:"🎉",t:"半程慶典"},{e:"🥗",t:"原型食物"},
+  {e:"🤝",t:"揪伴加油"},{e:"👟",t:"步數挑戰"},{e:"🍚",t:"減醣日"},{e:"📸",t:"中段對比"},
+  {e:"💪",t:"最後衝刺"},{e:"🏆",t:"完賽典禮"}
+];
+const HOTDAYS = [3,7,14]; // 橘框驗收日
+const DAILY_TASKS = [
+  {em:"⚖️",t:"晨間量體重"},
+  {em:"🥛",t:"早晚各一杯蛋白飲"},
+  {em:"💊",t:"補充益生菌"},
+  {em:"💧",t:"喝水 2000cc"},
+  {em:"🚶",t:"走 5000 步"},
+  {em:"📸",t:"完成當日打卡紀錄"}
+];
+const TOTAL = 14, WIN = 12;
+
+/* ============ 狀態（存 localStorage） ============ */
+const KEY = "slimcamp14_demo";
+function load(){
+  try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch(e){ return null; }
+}
+function blank(){
+  return { day:1, checked:[], todayTasks:[false,false,false,false,false,false], w0:"", w1:"" };
+}
+let S = load() || blank();
+function save(){ localStorage.setItem(KEY, JSON.stringify(S)); }
+
+/* ============ 渲染 ============ */
+function streak(){
+  // 從目前已打卡天數算最長連續尾段
+  let s=0; const set=new Set(S.checked);
+  for(let d=S.day; d>=1; d--){ if(set.has(d)) s++; else break; }
+  return s;
+}
+function todayChecked(){ return S.checked.includes(S.day); }
+function allTasksDone(){ return S.todayTasks.every(x=>x); }
+
+function render(){
+  const d = S.day, theme = THEMES[d-1];
+  document.getElementById("dnum").textContent = "DAY " + d;
+  document.getElementById("dbDay").textContent = "Day " + d;
+  document.getElementById("daytheme").textContent = theme.e + " " + theme.t + " — 6 項全部完成才算當日打卡";
+  document.getElementById("stDay").innerHTML = d + "<small>/14</small>";
+  document.getElementById("stFire").textContent = streak() + "🔥";
+  const cc = S.checked.length;
+  document.getElementById("stCheck").innerHTML = Math.min(cc,WIN) + "<small>/12</small>";
+
+  // 完賽進度
+  document.getElementById("winNow").textContent = cc;
+  const pct = Math.min(100, Math.round(cc/WIN*100));
+  document.getElementById("winBar").style.width = pct + "%";
+  document.getElementById("winFlag").classList.toggle("show", cc>=WIN && S.w0 && S.w1);
+
+  // 任務清單
+  const list = document.getElementById("tasklist");
+  list.innerHTML = "";
+  const locked = todayChecked();
+  DAILY_TASKS.forEach((tk,i)=>{
+    const done = S.todayTasks[i];
+    const el = document.createElement("div");
+    el.className = "titem" + (done?" done":"") + (locked?" locked":"");
+    el.innerHTML = '<div class="box">'+(done?"✓":"")+'</div><div class="label"><span class="em">'+tk.em+'</span>'+tk.t+'</div>';
+    if(!locked) el.onclick = ()=>{ S.todayTasks[i]=!S.todayTasks[i]; save(); render(); };
+    list.appendChild(el);
+  });
+
+  // 打卡按鈕
+  const btn = document.getElementById("checkinBtn");
+  const hint = document.getElementById("checkinHint");
+  if(locked){
+    btn.textContent = "今日已打卡 ✓"; btn.className="checkin-btn done"; btn.disabled=true;
+    hint.textContent = "明天記得回來，別讓火苗斷掉 🔥";
+  } else if(allTasksDone()){
+    btn.textContent = "🔥 完成打卡！"; btn.className="checkin-btn"; btn.disabled=false;
+    hint.textContent = "6 項都完成了，按下打卡點亮今天";
+  } else {
+    const left = S.todayTasks.filter(x=>!x).length;
+    btn.textContent = "還差 "+left+" 項任務"; btn.className="checkin-btn"; btn.disabled=true;
+    hint.textContent = "點上面每一項任務勾選，6 項都完成就能打卡";
+  }
+
+  // 大任務
+  const w1 = S.checked.filter(x=>x<=7).length;
+  const w2 = S.checked.filter(x=>x>=8 && x<=14).length;
+  document.getElementById("bt1pct").textContent = w1;
+  document.getElementById("bt2pct").textContent = w2;
+  document.getElementById("bt1bar").style.width = Math.round(w1/7*100)+"%";
+  document.getElementById("bt2bar").style.width = Math.round(w2/7*100)+"%";
+  document.getElementById("bt1").classList.toggle("cleared", w1>=7);
+  document.getElementById("bt2").classList.toggle("cleared", w2>=7 && S.checked.length>=WIN);
+
+  // 徽章
+  document.getElementById("bg3").classList.toggle("got", cc>=3);
+  document.getElementById("bg7").classList.toggle("got", cc>=7);
+  document.getElementById("bg14").classList.toggle("got", cc>=WIN && S.w0 && S.w1);
+
+  // 地圖
+  const cal = document.getElementById("cal");
+  cal.innerHTML = "";
+  for(let i=1;i<=14;i++){
+    const th=THEMES[i-1];
+    const el=document.createElement("div");
+    el.className="day"+(HOTDAYS.includes(i)?" hot":"")+(S.checked.includes(i)?" checked":"")+(i===d?" today":"");
+    el.innerHTML='<span class="n">D'+i+'</span><span class="e">'+th.e+'</span><span class="t">'+th.t+'</span>';
+    cal.appendChild(el);
+  }
+
+  // 數據
+  document.getElementById("w0").value = S.w0;
+  document.getElementById("w1").value = S.w1;
+  document.getElementById("w0tag").textContent = S.w0 ? "已填" : "";
+  document.getElementById("w1tag").textContent = S.w1 ? "已填" : "";
+}
+
+/* ============ 動作 ============ */
+function toast(msg){
+  const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show");
+  clearTimeout(window._tt); window._tt=setTimeout(()=>t.classList.remove("show"),1800);
+}
+
+document.getElementById("checkinBtn").onclick = ()=>{
+  if(todayChecked() || !allTasksDone()) return;
+  S.checked.push(S.day); save();
+  const cc=S.checked.length;
+  // 里程碑彈窗
+  if(cc===3) popup("🔥","火苗徽章 GET！","連續打卡 3 天，火苗點亮，繼續保持！");
+  else if(cc===7) popup("🎉","半程慶典！","打卡滿 7 天，第一週大任務完成，抽轉盤囉！");
+  else if(cc>=WIN && S.w0 && S.w1) popup("🏆","完賽達標！","保證金 $500 全額折抵產品券，你做到了！");
+  else toast("打卡成功！火苗 "+streak()+" 🔥");
+  render();
+};
+
+document.getElementById("saveData").onclick = ()=>{
+  S.w0 = document.getElementById("w0").value.trim();
+  S.w1 = document.getElementById("w1").value.trim();
+  save(); render();
+  toast("數據已儲存");
+  if(S.checked.length>=WIN && S.w0 && S.w1) popup("🏆","完賽達標！","保證金 $500 全額折抵產品券，你做到了！");
+};
+
+function popup(ico,title,text){
+  document.getElementById("mIco").textContent=ico;
+  document.getElementById("mTitle").textContent=title;
+  document.getElementById("mText").textContent=text;
+  document.getElementById("modal").classList.add("show");
+}
+function closeModal(){ document.getElementById("modal").classList.remove("show"); }
+
+/* demo 控制 */
+function quickFill(){ S.todayTasks=[true,true,true,true,true,true]; save(); render(); toast("今日 6 項已完成，按打卡點亮"); }
+function nextDay(){
+  if(S.day>=TOTAL){ toast("已是最後一天 Day 14"); return; }
+  S.day++; S.todayTasks=[false,false,false,false,false,false]; save(); render();
+}
+function resetAll(){ if(confirm("確定重置試玩進度？")){ S=blank(); save(); render(); } }
+
+render();
+</script>
+</body>
+</html>
